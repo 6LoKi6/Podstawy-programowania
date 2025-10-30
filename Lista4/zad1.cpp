@@ -6,12 +6,12 @@ size_t dlugosc(const char *src)
 {
     // Funkcja przyjmuję za argument tablicę znaków i zwraca jej długość
 
-    size_t size = 0;                                            // Tworzymy zmienną lokalną do przechowania długości tablicy
+    size_t size = 0;                                                // Tworzymy zmienną lokalną do przechowania długości tablicy
 
     while (src[size] != '\0')
-        size ++;                                                // Iterujemy zmienną size do momentu gdy nie napotkamy się na '\0' czyli koniec stringa
+        size ++;                                                    // Iterujemy zmienną size do momentu gdy nie napotkamy się na '\0' czyli koniec stringa
     
-    return size;                                                // Zwracamy zmienną size
+    return size;                                                    // Zwracamy zmienną size
 }
 
 char *kopiuj(const char *src)
@@ -31,7 +31,7 @@ char *kopiuj(const char *src)
         copy[i] = src[i];                                           // Kopiujemy wartości 
 
     copy[dlugosc(src)] = '\0';                                      // Dodajemy null'a na końcu
-    return copy;                                                    // Zwracamy kopię jako wskaźnik
+    return copy;                                                    // Zwracamy tablice
 }
 
 char *dolacz(const char *src, const char *ins, const size_t n)
@@ -39,29 +39,28 @@ char *dolacz(const char *src, const char *ins, const size_t n)
         // Funkcja ma wkleić pierwsze n znaków z ins'a a resztę z src
 
     char *temp = new char[dlugosc(src) + n + 1];                    // Alokujemy pamięć dla tablicy z dołączeniami + 1 dla null'a
-
-    size_t j = 0;                                                   // Tworzymy dodatkowy counter
+                                                  
     for(size_t i = 0; i < dlugosc(src) + n; i++)
     {
         if(i < dlugosc(src))                                        // Jeżeli i jest w obrębie source, kopiujemy
             temp[i] = src[i];
 
         else
-            temp[i] = ins[j++];                                     // Gdy skończy się source doklejamy na koniec znaki z ins'a, drugi counter był potrzebny żeby po skończeniu iteracji przez source, insa liczyć od 0
+            temp[i] = ins[i - dlugosc(src)];                        // Gdy skończy się source doklejamy na koniec znaki z ins'a o indexie mniejszym o długość src, żeby zacząć od początku
     }
 
-        temp[dlugosc(src) + n] = '\0';                              // Dodajemy null'a
-        return temp;                                                // Zwracamy tablice temp
+    temp[dlugosc(src) + n] = '\0';                                  // Dodajemy null'a
+    return temp;                                                    // Zwracamy tablice temp
 }
 
 char *wstaw(const char *src, char s)
 {
     // Funkcja wstawia podany znak co trzeci index
 
-    char *temp = new char[dlugosc(src) + dlugosc(src) / 3 + 1];      // Alokujemy pamięć dla stringa który potrzebyuje więcej pamięci przez znak co trzeci index + 1 dla null'a
+    char *temp = new char[dlugosc(src) + dlugosc(src) / 3 + 2];     // Alokujemy pamięć dla stringa który potrzebyuje więcej pamięci przez znak co trzeci index + 1 dla null'a
 
     size_t j = 0;                                                   // Tworzymy pomocniczy counter
-    for(size_t i = 0; i < dlugosc(src); i++)
+    for(size_t i = 0; i < dlugosc(src) + 1; i++)
     {
         if(i % 3 == 0)
             temp[j++] = s;
@@ -69,8 +68,8 @@ char *wstaw(const char *src, char s)
         temp[j++] = src[i];
     }
 
-    temp[dlugosc(src) + dlugosc(src) / 3] = '\0';                   // dodajemy null'a
-    return temp;                                                    // zwracamy jakko wskaźnik
+    temp[dlugosc(src) + dlugosc(src) / 3 + 1] = '\0';               // Dodajemy null'a
+    return temp;                                                    // Zwracamy jakko wskaźnik
 }
 
 int porownaj(const char* str1, const char* str2)
